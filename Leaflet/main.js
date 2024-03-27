@@ -34,8 +34,9 @@ function init() {
 
     const layerControls = L.control.layers(baseLayers, {}, {}).addTo(mymap);
 
+    
     // Définir le chemin du fichier JSON
-    var jsonFilePath = 'http://localhost:8000/markers.json';
+    var jsonFilePath = './markers.json';
 
     // Charger le fichier JSON à l'aide de Fetch
     fetch(jsonFilePath)
