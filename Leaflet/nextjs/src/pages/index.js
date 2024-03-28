@@ -18,7 +18,7 @@ export default function Home() {
     // Charger les données depuis le fichier JSON
     const fetchData = async () => {
       try {
-        const data = require('C:/Users/SJWF8604/Documents/Leaflet/nextjs/src/pages/markers.json');
+        const data = require('./markers.json');
         setMarkers(data);
       } catch (error) {
         console.error('Error fetching data:', error);
