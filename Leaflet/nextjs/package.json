@@ -1,18 +1,14 @@
 {
-  "name": "next-leaflet-starter",
+  "name": "next-leaflet app",
   "homepage": "https://next-leaflet-starter.netlify.app",
   "version": "0.1.0",
   "license": "MIT",
-  "author": "Colby Fayock <hello@colbyfayock.com>",
+  "author": "Karl Tortebecker",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
     "start": "next start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/colbyfayock/next-leaflet-starter"
   },
   "bugs": {
     "url": "https://github.com/colbyfayock/next-leaflet-starter/issues"
