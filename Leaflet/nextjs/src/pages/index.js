@@ -34,7 +34,7 @@ export default function Home() {
     <Layout>
       <Head>
         <title>Carte des sites d'OCM</title>
-        <meta name="description" content="Create mapping apps with Next.js Leaflet Starter" />
+        <meta name="description" content="Create mapping apps with Next.js Leaflet for QoE" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -44,7 +44,7 @@ export default function Home() {
           Carte des sites d'OCM
           </h1>
 
-          <Map className={styles.homeMap} width="1500" height="1000" center={DEFAULT_CENTER} zoom={8} minZoom={5} maxZoom={13}>
+          <Map className={styles.homeMap} width="1000" height="800" center={DEFAULT_CENTER} zoom={8} minZoom={5} maxZoom={13}>
             {({ TileLayer, Marker, Popup }) => (
               <>
                 <TileLayer
