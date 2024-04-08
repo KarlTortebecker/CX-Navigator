@@ -9,6 +9,8 @@ import Button from '@components/Button';
 
 import styles from '@styles/Home.module.scss';
 
+import data from './markers.json';
+
 const DEFAULT_CENTER = [7.37, 12.35];
 
 export default function Home() {
@@ -18,8 +20,8 @@ export default function Home() {
     // Charger les données depuis le fichier JSON
     const fetchData = async () => {
       try {
-        const data = require('./markers.json');
         setMarkers(data);
+        console.log(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -42,7 +44,7 @@ export default function Home() {
           Carte des sites d'OCM
           </h1>
 
-          <Map className={styles.homeMap} width="1000" height="800" center={DEFAULT_CENTER} zoom={8} minZoom={5} maxZoom={13}>
+          <Map className={styles.homeMap} width="1500" height="1000" center={DEFAULT_CENTER} zoom={8} minZoom={5} maxZoom={13}>
             {({ TileLayer, Marker, Popup }) => (
               <>
                 <TileLayer
@@ -51,7 +53,12 @@ export default function Home() {
                 {markers.map((marker, index) => (
                   <Marker key={index} position={[marker.coords[0], marker.coords[1]]}>
                     <Popup>
-                      {marker.nom}
+                      <b>Nom du site :</b> {marker.nom} <br />
+                      <b>Localité : </b>{marker.localite} <br />
+                      <b>Code du site : </b>{marker.code}<br />
+                      <b>Type de zone : </b>{marker.typezone}<br />
+                      <b>Région commerciale : </b>{marker.regioncommerciale}<br />
+                      <b>Zone PMO : </b>{marker.zonepmo}
                     </Popup>
                   </Marker>
                 ))}
@@ -60,7 +67,7 @@ export default function Home() {
           </Map>
 
           <p className={styles.description}>
-            <code className={styles.code}>Prémiers résultats de l'affichage des sites sur la carte</code>
+            <code className={styles.code}>Premiers résultats de l'affichage des sites sur la carte</code>
           </p>
 
         </Container>
