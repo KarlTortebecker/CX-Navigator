@@ -56,8 +56,8 @@ export default function Home() {
                       <b>Nom du site :</b> {marker.nom} <br />
                       <b>Localité : </b>{marker.localite} <br />
                       <b>Code du site : </b>{marker.code}<br />
-                      <b>Type de zone : </b>{marker.typezone}<br />
-                      <b>Région commerciale : </b>{marker.regioncommerciale}<br />
+                      <b>Type de zone : </b>{marker.Typezone}<br />
+                      <b>QoE data : </b>{marker.data}<br />
                       <b>Zone PMO : </b>{marker.zonepmo}<br />
                       <b>Coordonnées : </b>{marker.coords[1]} -- {marker.coords[0]}
                     </Popup>
