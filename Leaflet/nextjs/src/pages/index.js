@@ -58,7 +58,8 @@ export default function Home() {
                       <b>Code du site : </b>{marker.code}<br />
                       <b>Type de zone : </b>{marker.typezone}<br />
                       <b>Région commerciale : </b>{marker.regioncommerciale}<br />
-                      <b>Zone PMO : </b>{marker.zonepmo}
+                      <b>Zone PMO : </b>{marker.zonepmo}<br />
+                      <b>Coordonnées : </b>{marker.coords[1]} -- {marker.coords[0]}
                     </Popup>
                   </Marker>
                 ))}
