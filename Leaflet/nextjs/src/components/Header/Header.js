@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaGithub } from 'react-icons/fa';
+import { FaMapMarked } from 'react-icons/fa';
 
 import Container from '@components/Container';
 
@@ -17,7 +17,7 @@ const Header = () => {
         <ul className={styles.headerLinks}>
           <li>
             <a href="https://github.com/colbyfayock/next-leaflet-starter" rel="noreferrer">
-              <FaGithub />
+              <FaMapMarked />
             </a>
           </li>
         </ul>
