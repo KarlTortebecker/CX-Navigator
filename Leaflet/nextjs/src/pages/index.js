@@ -58,7 +58,7 @@ export default function Home() {
             {({ TileLayer, Marker, Popup }) => (
               <>
                 <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
                 />
                 
                 {/* Afficher les marqueurs filtrés */}
