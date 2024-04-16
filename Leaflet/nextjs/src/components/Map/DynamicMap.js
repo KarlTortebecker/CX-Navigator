@@ -1,33 +1,38 @@
-import { useEffect } from 'react';
-import Leaflet from 'leaflet';
+import { useEffect, useState } from 'react';
 import * as ReactLeaflet from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import styles from './Map.module.scss';
 
-const { MapContainer } = ReactLeaflet;
+const { MapContainer, GeoJSON } = ReactLeaflet;
 
-const Map = ({ children, className, width, height, ...rest }) => {
+const Map = ({ children, className, width, height, geojsonData, ...rest }) => {
+  const [Leaflet, setLeaflet] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('leaflet').then((L) => {
+        setLeaflet(L.default);
+        delete L.default.Icon.Default.prototype._getIconUrl;
+        L.default.Icon.Default.mergeOptions({
+          iconRetinaUrl: 'leaflet/images/marker-icon-2x.png',
+          iconUrl: 'leaflet/images/marker-icon.png',
+          shadowUrl: 'leaflet/images/marker-shadow.png',
+        });
+      });
+    }
+  }, []);
+
   let mapClassName = styles.map;
 
-  if ( className ) {
+  if (className) {
     mapClassName = `${mapClassName} ${className}`;
   }
 
-  useEffect(() => {
-    (async function init() {
-      delete Leaflet.Icon.Default.prototype._getIconUrl;
-      Leaflet.Icon.Default.mergeOptions({
-        iconRetinaUrl: 'leaflet/images/marker-icon-2x.png',
-        iconUrl: 'leaflet/images/marker-icon.png',
-        shadowUrl: 'leaflet/images/marker-shadow.png',
-      });
-    })();
-  }, []);
-
   return (
     <MapContainer className={mapClassName} {...rest}>
-      {children(ReactLeaflet, Leaflet)}
+      {Leaflet && children(ReactLeaflet, Leaflet)}
+      {geojsonData && <GeoJSON data={geojsonData} />}
     </MapContainer>
   )
 }

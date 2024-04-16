@@ -10,18 +10,22 @@ import SearchBar from '@components/SearchBar'; // Importez la barre de recherche
 import styles from '@styles/Home.module.scss';
 
 import data from './markers.json';
+import regions from './regions.json';
+
 
 const DEFAULT_CENTER = [7.37, 12.35];
 
 export default function Home() {
   const [markers, setMarkers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [geojsonData, setGeojsonData] = useState([]);
 
   useEffect(() => {
     // Charger les données depuis le fichier JSON
     const fetchData = async () => {
       try {
         setMarkers(data);
+        setGeojsonData(regions);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -54,7 +58,7 @@ export default function Home() {
           {/* Intégration de la barre de recherche */}
           <SearchBar setSearchQuery={setSearchQuery} />
 
-          <Map className={styles.homeMap} width="1000" height="800" center={DEFAULT_CENTER} zoom={8} minZoom={5} maxZoom={13}>
+          <Map className={styles.homeMap} width="1000" height="800" center={DEFAULT_CENTER} zoom={8} minZoom={5} maxZoom={13} geojsonData={geojsonData}>
             {({ TileLayer, Marker, Popup }) => (
               <>
                 <TileLayer
