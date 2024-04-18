@@ -76,18 +76,15 @@ export default function Home() {
           {isSidebarOpen && selectedMarker && (
               <Sidebar isOpen={true} onClose={handleCloseSidebar}>
                 <h2 className={styles.code}>{selectedMarker.nom}</h2>
-                <p>Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
+                <p> Localité :  {selectedMarker.localite}</p>
+                <p> Type de zone : {selectedMarker.zonepmo}</p>
+                <p> Région : {selectedMarker.region}</p>
+                <p> Département : {selectedMarker.departement}</p>
+                <p> Arrondissement : {selectedMarker.arrondissement}</p>
+                <p> QoE data : {selectedMarker.data.toFixed(3)}</p>
+                <p> QoE sms : {selectedMarker.sms.toFixed(3)}</p>
+                <p> QoE voix : {selectedMarker.voix.toFixed(3)}</p>
+                <p> Taux de dropcall : {selectedMarker.dropcall.toFixed(3)}</p>
               </Sidebar>
             )}
 

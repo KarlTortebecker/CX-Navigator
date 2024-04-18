@@ -14,6 +14,12 @@
   z-index: 999; /*La sidebar a un z-index plus élevé que la carte */
 }
 
+.sidebar_p {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .sidebar.open {
   right: 0;
 }
