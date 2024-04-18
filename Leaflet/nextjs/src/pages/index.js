@@ -72,8 +72,29 @@ export default function Home() {
           {/* Intégration de la barre de recherche */}
           <SearchBar setSearchQuery={setSearchQuery} />
 
+          {/* Afficher la sidebar */}
+          {isSidebarOpen && selectedMarker && (
+              <Sidebar isOpen={true} onClose={handleCloseSidebar}>
+                <h2 className={styles.code}>{selectedMarker.nom}</h2>
+                <p>Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+                <p> Here to display the necessary to explain the QoE</p>
+              </Sidebar>
+            )}
+
+
           {/* Afficher la carte */}
           <div className={styles.map}>
+              
             <Map
               className={styles.homeMap}
               width="1000"
@@ -85,7 +106,8 @@ export default function Home() {
               geojsonData={geojsonData}
               onMarkerClick={(e) => handleMarkerClick(e.target)}
             >
-              {({ TileLayer, Marker, Popup }) => (
+            
+              {({ TileLayer, Marker, Popup, Sidebar }) => (
                 <>
                   <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
 
@@ -123,26 +145,9 @@ export default function Home() {
                 </>
               )}
             </Map>
-
-            {/* Afficher la sidebar */}
-            {isSidebarOpen && selectedMarker && (
-              <Sidebar isOpen={true} onClose={handleCloseSidebar}>
-                <h2>{selectedMarker.nom}</h2>
-                <p>Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-                <p> Here to display the necessary to explain the QoE</p>
-              </Sidebar>
-            )}
               
+              
+
             </div>
 
 
@@ -152,6 +157,7 @@ export default function Home() {
             </code>
           </p>
         </Container>
+        
       </Section>
     </Layout>
   );

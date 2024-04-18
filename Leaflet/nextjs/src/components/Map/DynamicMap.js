@@ -6,7 +6,7 @@ import styles from './Map.module.scss';
 
 const { MapContainer, GeoJSON } = ReactLeaflet;
 
-const Map = ({ children, className, width, height, geojsonData, ...rest }) => {
+const Map = ({ children, className, width, height, geojsonData, Sidebar, ...rest }) => {
   const [Leaflet, setLeaflet] = useState(null);
 
   useEffect(() => {
@@ -33,6 +33,7 @@ const Map = ({ children, className, width, height, geojsonData, ...rest }) => {
     <MapContainer className={mapClassName} {...rest}>
       {Leaflet && children(ReactLeaflet, Leaflet)}
       {geojsonData && <GeoJSON data={geojsonData} />}
+      {Sidebar}
     </MapContainer>
   )
 }
