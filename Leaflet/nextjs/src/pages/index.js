@@ -20,7 +20,7 @@ export default function Home() {
   const [markers, setMarkers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [geojsonData, setGeojsonData] = useState([]);
-  const [selectedView, setSelectedView] = useState(views[4]);
+  const [selectedView, setSelectedView] = useState(views[0]); // Modifier l'index initial à 0
   const [selectedMarker, setSelectedMarker] = useState();  
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -96,8 +96,7 @@ export default function Home() {
               <Sidebar isOpen={true} onClose={handleCloseSidebar}>
                 <h2 className={styles.code}>Site de {selectedMarker.nom}</h2>
                 <p> Localité :  {selectedMarker.localite}</p>
-                <p> Zone PMO :  {selectedMarker.zonepmo}</p>
-                <p> Type de zone : {selectedMarker.Typezone}</p>
+                <p> Type de zone : {selectedMarker.zonepmo}</p>
                 <p> Région : {selectedMarker.region}</p>
                 <p> Département : {selectedMarker.departement}</p>
                 <p> Arrondissement : {selectedMarker.arrondissement}</p>
@@ -108,12 +107,9 @@ export default function Home() {
               </Sidebar>
             )}
 
-
-          {/* Afficher la carte */}
+          {/* Afficher la carte en fonction de la vue sélectionnée */}
           <div className={styles.map}>
-              
-            {/* Affichage en fonction de la vue sélectionnée */}
-            {selectedView === "Sites" && (
+          {selectedView === "Sites" && (
               // Afficher les sites sur la carte
               <Map
               className={styles.homeMap}
@@ -163,63 +159,36 @@ export default function Home() {
               )}
             </Map>
             )}
-              
-              {selectedView === "Régions" && (
-              // Afficher les sites sur la carte
+            {selectedView === "Régions" && (
               <Map
-              className={styles.homeMap}
-              width="1000"
-              height="800"
-              center={DEFAULT_CENTER}
-              zoom={8}
-              minZoom={5}
-              maxZoom={13}
-              geojsonData={geojsonData}
-              onMarkerClick={(e) => handleMarkerClick(e.target)}
-            >
-            
-              {({ TileLayer, Marker, Popup }) => (
-                <>
-                  <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
-
-                  {/* Afficher les marqueurs filtrés */}
-                  {filteredMarkers.map((marker, index) => (
-                    <Marker
-                      key={index}
-                      position={[marker.coords[0], marker.coords[1]]}
-                      eventHandlers={{ dblclick: () => {
-                        console.log('Marker double-clicked:', marker); // Ajoutez cette ligne pour vérifier si le double-clic est capturé
-                        handleMarkerDoubleClick(marker);
-                      }}}
-                      >
-                      <Popup>
-                        <b>Nom du site :</b> {marker.nom} <br />
-                        <b>Localité : </b>
-                        {marker.localite} <br />
-                        <b>Code du site : </b>
-                        {marker.code}
-                        <br />
-                        <b>Type de zone : </b>
-                        {marker.Typezone}
-                        <br />
-                        <b>QoE data : </b>
-                        {marker.data}
-                        <br />
-                        <b>Zone PMO : </b>
-                        {marker.zonepmo}
-                        <br />
-                        <b>Coordonnées : </b>
-                        {marker.coords[1]} -- {marker.coords[0]}
-                      </Popup>
-                    </Marker>
-                  ))}
-                </>
-              )}
+                className={styles.homeMap}
+                width="1000"
+                height="800"
+                center={DEFAULT_CENTER}
+                zoom={7}
+                minZoom={5}
+                maxZoom={11}
+                geojsonData={geojsonData}
+              >
+                {/* Contenu de la carte pour la vue "Régions" */}
+                {({ TileLayer, GeoJSON, Popup }) => (
+                  <>
+                    <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
+                    {/* Afficher les entités géographiques */}
+                    <GeoJSON
+                      data={geojsonData}
+                      onEachFeature={(feature, layer) => {
+                        layer.on('click', (e) => {
+                          const regionInfo = feature.properties; // Récupérer les informations de la région
+                          layer.bindPopup(`<b> Région : ${regionInfo.Région}</b><br> Superficie : ${regionInfo.Superficie}`); // Afficher les informations dans le popup
+                        });
+                      }}
+                    />
+                  </>
+                )}
             </Map>
             )}
-
-            </div>
-
+          </div>
 
           <p className={styles.description}>
             <code className={styles.code}>
@@ -227,7 +196,6 @@ export default function Home() {
             </code>
           </p>
         </Container>
-        
       </Section>
     </Layout>
   );
