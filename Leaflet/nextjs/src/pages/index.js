@@ -12,6 +12,10 @@ import styles from "@styles/Home.module.scss";
 
 import data from "./markers.json";
 import regions from "./regions.json";
+import departements from './departements.json'
+import arrondissements from "./arrondissements.json";
+import cameroun from "./cameroun.json";
+
 
 const DEFAULT_CENTER = [7.37, 12.35];
 const views = ["Pays", "Régions", "Départements", "Arrondissements", "Sites"];
@@ -19,7 +23,10 @@ const views = ["Pays", "Régions", "Départements", "Arrondissements", "Sites"];
 export default function Home() {
   const [markers, setMarkers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [geojsonData, setGeojsonData] = useState([]);
+  const [regionData, setRegionData] = useState([]);
+  const [countryData, setCountryData] = useState([]);
+  const [departementData, setDepartementData] = useState([]);
+  const [arrondissementData, setArrondissementDataData] = useState([]);
   const [selectedView, setSelectedView] = useState(views[0]); // Modifier l'index initial à 0
   const [selectedMarker, setSelectedMarker] = useState();  
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -29,7 +36,10 @@ export default function Home() {
     const fetchData = async () => {
       try {
         setMarkers(data);
-        setGeojsonData(regions);
+        setRegionData(regions);
+        setArrondissementDataData(arrondissements);
+        setCountryData(cameroun);
+        setDepartementData(departements);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -76,12 +86,13 @@ export default function Home() {
         <Container>
           <h1 className={styles.title}>Carte des sites d'OCM</h1>
 
-          {/* Intégration de la barre de recherche */}
+          <div style={{display:"flex", justifyContent:"space-between"}}>
+              {/* Intégration de la barre de recherche */}
           <SearchBar setSearchQuery={setSearchQuery} />
 
           {/* Sélecteur de vue */}
-          <div className={styles.sidebar}>
-            <select value={selectedView} onChange={handleChangeView}>
+          <div >
+            <select value={selectedView} onChange={handleChangeView} style={{border: "1px solid #d1d5db"}}>
               {views.map((view) => (
                 <option key={view} value={view}>
                   {view}
@@ -89,6 +100,8 @@ export default function Home() {
               ))}
             </select>
           </div>
+          </div>
+          
 
 
           {/* Afficher la sidebar */}
@@ -116,8 +129,8 @@ export default function Home() {
               width="1000"
               height="800"
               center={DEFAULT_CENTER}
-              zoom={8}
-              minZoom={7}
+              zoom={7}
+              minZoom={6}
               maxZoom={11}
             >
             
@@ -165,10 +178,10 @@ export default function Home() {
                 width="1000"
                 height="800"
                 center={DEFAULT_CENTER}
-                zoom={7}
+                zoom={6}
                 minZoom={5}
-                maxZoom={11}
-                geojsonData={geojsonData}
+                maxZoom={8}
+                geojsonData={regionData}
               >
                 {/* Contenu de la carte pour la vue "Régions" */}
                 {({ TileLayer, GeoJSON, Popup }) => (
@@ -176,7 +189,7 @@ export default function Home() {
                     <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
                     {/* Afficher les entités géographiques */}
                     <GeoJSON
-                      data={geojsonData}
+                      data={regionData}
                       onEachFeature={(feature, layer) => {
                         layer.on('click', (e) => {
                           const regionInfo = feature.properties; // Récupérer les informations de la région
@@ -188,6 +201,98 @@ export default function Home() {
                 )}
             </Map>
             )}
+
+            {selectedView === "Pays" && (
+              <Map
+                className={styles.homeMap}
+                width="1000"
+                height="800"
+                center={DEFAULT_CENTER}
+                zoom={6}
+                minZoom={5}
+                maxZoom={8}
+                geojsonData={countryData}
+              >
+                {/* Contenu de la carte pour la vue "Pays" */}
+                {({ TileLayer, GeoJSON }) => (
+                  <>
+                    <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
+                    {/* Afficher les entités géographiques */}
+                    <GeoJSON
+                      data={countryData}
+                      onEachFeature={(feature, layer) => {
+                        layer.on('click', (e) => {
+                          const countryInfo = feature.properties; // Récupérer les informations de la région
+                          layer.bindPopup(`<b> Pays : ${countryInfo.Pays}</b>`); // Afficher les informations dans le popup
+                        });
+                      }}
+                    />
+                  </>
+                )}
+            </Map>
+            )}
+
+
+            {selectedView === "Départements" && (
+              <Map
+                className={styles.homeMap}
+                width="1000"
+                height="800"
+                center={DEFAULT_CENTER}
+                zoom={6}
+                minZoom={5}
+                maxZoom={8}
+                geojsonData={departementData}
+              >
+                {/* Contenu de la carte pour la vue "Département" */}
+                {({ TileLayer, GeoJSON }) => (
+                  <>
+                    <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
+                    {/* Afficher les entités géographiques */}
+                    <GeoJSON
+                      data={departementData}
+                      onEachFeature={(feature, layer) => {
+                        layer.on('click', (e) => {
+                          const departementInfo = feature.properties; // Récupérer les informations de la région
+                          layer.bindPopup(`<b> Pays : ${departementInfo.Département}</b>`); // Afficher les informations dans le popup
+                        });
+                      }}
+                    />
+                  </>
+                )}
+            </Map>
+            )}
+
+            {selectedView === "Arrondissements" && (
+              <Map
+                className={styles.homeMap}
+                width="1000"
+                height="800"
+                center={DEFAULT_CENTER}
+                zoom={6}
+                minZoom={5}
+                maxZoom={8}
+                geojsonData={departementData}
+              >
+                {/* Contenu de la carte pour la vue "Arrondissement" */}
+                {({ TileLayer, GeoJSON }) => (
+                  <>
+                    <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
+                    {/* Afficher les entités géographiques */}
+                    <GeoJSON
+                      data={arrondissementData}
+                      onEachFeature={(feature, layer) => {
+                        layer.on('click', (e) => {
+                          const arrondissementInfo = feature.properties; // Récupérer les informations de l'arrondissement
+                          layer.bindPopup(`<b> Arrondissement : ${arrondissementInfo.Arrondissement}</b>`); // Afficher les informations dans le popup
+                        });
+                      }}
+                    />
+                  </>
+                )}
+            </Map>
+            )}
+
           </div>
 
           <p className={styles.description}>
