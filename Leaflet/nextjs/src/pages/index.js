@@ -92,7 +92,7 @@ export default function Home() {
 
           {/* Sélecteur de vue */}
           <div >
-            <select value={selectedView} onChange={handleChangeView} style={{border: "1px solid #d1d5db"}}>
+            <select value={selectedView} onChange={handleChangeView} style={{border: "1px solid #d1d5db", borderRadius: "6px"}}>
               {views.map((view) => (
                 <option key={view} value={view}>
                   {view}
