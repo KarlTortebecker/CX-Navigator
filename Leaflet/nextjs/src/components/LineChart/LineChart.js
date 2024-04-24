@@ -15,46 +15,43 @@ ChartJS.register(
 
 export default function LineChart(){
 
-    const [chartData, setCharData] = useState({
+    const [chartData, setChartData] = useState({
         datasets: []
-    })
+    });
 
-    const [charOptions, setCharOptions] = useState({})
+    const [chartOptions, setChartOptions] = useState({});
 
-    useEffect( () => {
-        setCharData({
+    useEffect(() => {
+        setChartData({
             labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat'], 
             datasets: [
                 {
-                    label:'QoE Data %',
-                    data: [0, 85.6, 72.3, 90.2, 92.5, 93.0, 100],
+                    label:'QoE Data en %',
+                    data: [100, 85.6, 50.3, 90.2, 92.5, 93.0, 100],
                     borderColor: 'rgb(53, 162, 235)',
                     backgroundColor: 'rgb(53, 162, 235, 0.4)'
                 }
             ]
-        })
+        });
 
-        setCharOptions({
+        setChartOptions({
             plugins: {
                 legend: {
                     position : 'top'
                 },
                 title: {
                     display: true,
-                    text: "Evolution de la QoE data"
+                    text: "Evolution QoE data sur les 7 derniers jours"
                 }
             },
             maintainAspectRatio: false,
             responsive: false
-        })
-    })
+        });
+    }, []); 
 
     return (
-        <>
         <div className={styles.LineChart}>
-            <Line options={charOptions} data={chartData} />
+            <Line options={chartOptions} data={chartData} />
         </div>
-        </>
-
-    )
+    );
 }

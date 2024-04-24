@@ -119,7 +119,7 @@ export default function Home() {
                 <p> QoE sms : {selectedMarker.sms.toFixed(3)}</p>
                 <p> QoE voix : {selectedMarker.voix.toFixed(3)}</p>
                 <p> Taux de dropcall : {selectedMarker.dropcall.toFixed(3)}</p>
-                <div className={styles.LineChart} style={{ height:'359px', width:'px'}}>
+                <div className={styles.LineChart} >
                   <LineChart></LineChart>
                 </div>
               </Sidebar>
@@ -305,6 +305,7 @@ export default function Home() {
               Premiers résultats de l'affichage des sites sur la carte
             </code>
           </p>
+          
         </Container>
       </Section>
     </Layout>
