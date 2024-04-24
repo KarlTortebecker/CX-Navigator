@@ -7,6 +7,8 @@ import Container from "@components/Container";
 import Sidebar from "@components/Sidebar";
 import Map from "@components/Map";
 import SearchBar from "@components/SearchBar"; // Importez la barre de recherche ici
+import LineChart from "@components/LineChart";
+
 
 import styles from "@styles/Home.module.scss";
 
@@ -75,6 +77,7 @@ export default function Home() {
     <Layout>
       <Head>
         <title>Carte des sites d'OCM</title>
+        <title>Le CX Navigator</title>
         <meta
           name="description"
           content="Create mapping apps with Next.js Leaflet for QoE"
@@ -117,6 +120,9 @@ export default function Home() {
                 <p> QoE sms : {selectedMarker.sms.toFixed(3)}</p>
                 <p> QoE voix : {selectedMarker.voix.toFixed(3)}</p>
                 <p> Taux de dropcall : {selectedMarker.dropcall.toFixed(3)}</p>
+                <div className={styles.LineChart} style={{ height:'359px', width:'px'}}>
+                  <LineChart></LineChart>
+                </div>
               </Sidebar>
             )}
 
@@ -254,7 +260,7 @@ export default function Home() {
                       onEachFeature={(feature, layer) => {
                         layer.on('click', (e) => {
                           const departementInfo = feature.properties; // Récupérer les informations de la région
-                          layer.bindPopup(`<b> Pays : ${departementInfo.Département}</b>`); // Afficher les informations dans le popup
+                          layer.bindPopup(`<b> Département : ${departementInfo.Département}</b>`); // Afficher les informations dans le popup
                         });
                       }}
                     />
