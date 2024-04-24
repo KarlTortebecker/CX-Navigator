@@ -76,7 +76,6 @@ export default function Home() {
   return (
     <Layout>
       <Head>
-        <title>Carte des sites d'OCM</title>
         <title>Le CX Navigator</title>
         <meta
           name="description"
