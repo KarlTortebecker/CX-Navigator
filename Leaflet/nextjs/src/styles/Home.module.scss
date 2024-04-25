@@ -24,3 +24,26 @@
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
+
+.special{
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 1rem;
+}
+
+.listtext{
+  list-style-type: none;
+  padding: 1px 10px;
+  font-size: 0.8rem;
+  font-family: Helvetica, sans-serif;
+  text-align:justify;
+}
+
+.listtext li {
+  font-size: 0.8rem;
+  font-family: Helvetica, sans-serif;
+  font-style: italic;
+}
+
