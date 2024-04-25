@@ -11,7 +11,7 @@ const Header = () => {
       <Container className={styles.headerContainer}>
         <p className={styles.headerTitle}>
           <Link href="/">
-            Les sites de Orange Cameroun
+            Le CX Navigator
           </Link>
         </p>
         <ul className={styles.headerLinks}>

@@ -14,6 +14,7 @@ ChartJS.register(
     Legend
 );
 
+
 export default function LineChart(){
 
     const [chartData, setChartData] = useState({
@@ -27,10 +28,22 @@ export default function LineChart(){
             labels: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'], 
             datasets: [
                 {
-                    label:'QoE Data en %',
+                    label:'Data',
                     data: [100, 85.6, 50.3, 90.2, 92.5, 93.0, 100],
                     borderColor: 'rgb(53, 162, 235)',
                     backgroundColor: 'rgb(53, 162, 235, 0.4)'
+                },
+                {
+                    label: 'Voix',
+                    data: [95, 90, 85, 80, 75, 70, 65],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgb(255, 99, 132, 0.4)'
+                },
+                {
+                    label: 'SMS',
+                    data: [80, 85, 90, 95, 100, 95, 90],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgb(75, 192, 192, 0.4)'
                 }
             ]
         });
@@ -42,17 +55,44 @@ export default function LineChart(){
                 },
                 title: {
                     display: true,
-                    text: "Evolution QoE data sur les 7 derniers jours"
+                    text: "Evolution QoE sur les 7 derniers jours"
                 }
             },
             maintainAspectRatio: false,
-            responsive: false
+            responsive: false,
+            scales: {
+                y: {
+                    ticks: {
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            },
+            // Set the size of the canvas
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 15
+                }
+            },
         });
     }, []); 
 
     return (
         <div className={styles.LineChart}>
             <Line options={chartOptions} data={chartData} />
+            <br/>
+            <br/>
         </div>
     );
 }
