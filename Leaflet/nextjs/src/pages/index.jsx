@@ -149,7 +149,7 @@ export default function Home() {
               width="1000"
               height="800"
               center={DEFAULT_CENTER}
-              zoom={8}
+              zoom={6}
               minZoom={6}
               maxZoom={13}
             >
