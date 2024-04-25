@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import styles from "@styles/Home.module.scss";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -23,7 +24,7 @@ export default function LineChart(){
 
     useEffect(() => {
         setChartData({
-            labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat'], 
+            labels: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'], 
             datasets: [
                 {
                     label:'QoE Data en %',
