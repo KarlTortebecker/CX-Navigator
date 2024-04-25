@@ -18,6 +18,9 @@ import departements from './departements.json'
 import arrondissements from "./arrondissements.json";
 import cameroun from "./cameroun.json";
 
+import { analyseQoE } from "./qoeAnalyser";
+
+
 
 const DEFAULT_CENTER = [7.37, 12.35];
 const views = ["Pays", "Régions", "Départements", "Arrondissements", "Sites"];
@@ -86,8 +89,6 @@ export default function Home() {
 
       <Section>
         <Container>
-          <h1 className={styles.title}>Carte des sites d'OCM</h1>
-
           <div style={{display:"flex", justifyContent:"space-between"}}>
               {/* Intégration de la barre de recherche */}
           <SearchBar setSearchQuery={setSearchQuery} />
@@ -110,15 +111,29 @@ export default function Home() {
           {isSidebarOpen && selectedMarker && (
               <Sidebar isOpen={true} onClose={handleCloseSidebar}>
                 <h2 className={styles.code}>Site de {selectedMarker.nom}</h2>
-                <p> Localité :  {selectedMarker.localite}</p>
-                <p> Type de zone : {selectedMarker.zonepmo}</p>
-                <p> Région : {selectedMarker.region}</p>
-                <p> Département : {selectedMarker.departement}</p>
-                <p> Arrondissement : {selectedMarker.arrondissement}</p>
-                <p> QoE data : {selectedMarker.data.toFixed(3)}</p>
-                <p> QoE sms : {selectedMarker.sms.toFixed(3)}</p>
-                <p> QoE voix : {selectedMarker.voix.toFixed(3)}</p>
-                <p> Taux de dropcall : {selectedMarker.dropcall.toFixed(3)}</p>
+                <div className={styles.special}>Détails du site</div>
+                <ul className={styles.listtext}>
+                  <li>Localité :  {selectedMarker.localite}</li>
+                  <li>Type de zone : {selectedMarker.zonepmo}</li>
+                  <li>Région : {selectedMarker.region}</li>
+                  <li>Département : {selectedMarker.departement}</li>
+                  <li>Arrondissement : {selectedMarker.arrondissement}</li>
+                  <li>QoE data : {selectedMarker.data.toFixed(3)}</li>
+                  <li>QoE sms : {selectedMarker.sms.toFixed(3)}</li>
+                  <li>QoE voix : {selectedMarker.voix.toFixed(3)}</li>
+                  <li>Taux de dropcall : {selectedMarker.dropcall.toFixed(3)}</li>
+                </ul>
+              
+                <div className={styles.special}>Explicatif QoE</div>
+                  <b className={styles.listtext}>Sur la QoE SMS</b>
+                  <p className={styles.listtext}>{analyseQoE("sms", selectedMarker.sms, 92.0).verdict}</p>
+                  
+                  <b className={styles.listtext}>Sur la QoE Voix</b>
+                  <p className={styles.listtext}>{analyseQoE("voix", selectedMarker.voix, 92.0).verdict}</p>
+                  
+                  <b className={styles.listtext}>Sur la QoE Data</b>
+                  <p className={styles.listtext}>{analyseQoE("data", selectedMarker.data, 92.0).verdict}</p>
+                  
                 <div className={styles.LineChart} >
                   <LineChart></LineChart>
                 </div>
@@ -134,9 +149,9 @@ export default function Home() {
               width="1000"
               height="800"
               center={DEFAULT_CENTER}
-              zoom={7}
+              zoom={8}
               minZoom={6}
-              maxZoom={11}
+              maxZoom={13}
             >
             
               {({ TileLayer, Marker, Popup }) => (
