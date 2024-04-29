@@ -29,19 +29,19 @@ export default function LineChart(){
             datasets: [
                 {
                     label:'Data',
-                    data: [100, 85.6, 50.3, 90.2, 92.5, 93.0, 100],
+                    data: [100, 85.6, 50.3, 90.2, 92.5, 64.86, 90.23],
                     borderColor: 'rgb(53, 162, 235)',
                     backgroundColor: 'rgb(53, 162, 235, 0.4)'
                 },
                 {
                     label: 'Voix',
-                    data: [95, 90, 85, 80, 75, 70, 65],
+                    data: [95, 90, 85, 80, 75, 93.68, 85],
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgb(255, 99, 132, 0.4)'
                 },
                 {
                     label: 'SMS',
-                    data: [80, 85, 90, 95, 100, 95, 90],
+                    data: [80, 85, 90, 95, 100, 81.31, 90],
                     borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgb(75, 192, 192, 0.4)'
                 }
