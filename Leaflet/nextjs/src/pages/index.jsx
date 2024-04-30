@@ -6,21 +6,19 @@ import Section from "@components/Section";
 import Container from "@components/Container";
 import Sidebar from "@components/Sidebar";
 import Map from "@components/Map";
-import SearchBar from "@components/SearchBar"; // Importez la barre de recherche ici
+import SearchBar from "@components/SearchBar";
 import LineChart from "@components/LineChart";
-
 
 import styles from "@styles/Home.module.scss";
 
 import data from "./markers.json";
 import regions from "./regions.json";
-import departements from './departements.json'
+import departements from './departements.json';
 import arrondissements from "./arrondissements.json";
 import cameroun from "./cameroun.json";
+import npsData from "./NPS_MARS.json"; // Import NPS data
 
 import { analyseQoE } from "./qoeAnalyser";
-
-
 
 const DEFAULT_CENTER = [7.37, 12.35];
 const views = ["Pays", "Régions", "Départements", "Arrondissements", "Sites"];
@@ -31,20 +29,22 @@ export default function Home() {
   const [regionData, setRegionData] = useState([]);
   const [countryData, setCountryData] = useState([]);
   const [departementData, setDepartementData] = useState([]);
-  const [arrondissementData, setArrondissementDataData] = useState([]);
-  const [selectedView, setSelectedView] = useState(views[0]); // Modifier l'index initial à 0
-  const [selectedMarker, setSelectedMarker] = useState();  
+  const [nps, setNps] = useState([]);
+  const [arrondissementData, setArrondissementData] = useState([]);
+  const [selectedView, setSelectedView] = useState(views[0]);
+  const [selectedMarker, setSelectedMarker] = useState();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [regionNPS, setRegionNPS] = useState(); // State to hold region NPS value
 
   useEffect(() => {
-    // Charger les données depuis le fichier JSON
     const fetchData = async () => {
       try {
         setMarkers(data);
         setRegionData(regions);
-        setArrondissementDataData(arrondissements);
+        setArrondissementData(arrondissements);
         setCountryData(cameroun);
         setDepartementData(departements);
+        setNps(npsData)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -64,11 +64,29 @@ export default function Home() {
   const handleMarkerDoubleClick = (marker) => {
     setIsSidebarOpen(true);
     setSelectedMarker(marker);
+  
+    // Fetch and set region NPS value when sidebar is opened for a site
+    const region = regions.features.find((feature) => feature.properties.Région.toLowerCase() === marker.region.toLowerCase());
+    if (region) {
+      const regionName = region.properties.Région;
+      const regionNPS = nps.find((item) => item.region === regionName);
+      if (regionNPS) {
+        const regionNPSValue = regionNPS.nps;
+        console.log(regionNPSValue);
+        setRegionNPS(regionNPSValue);
+      } else {
+        setRegionNPS(null); // Reset region NPS if region NPS data not found
+      }
+    } else {
+      setRegionNPS(null); // Reset region NPS if region not found
+    }
+    
   };
 
   const handleCloseSidebar = () => {
     setSelectedMarker(null);
-    setIsSidebarOpen(false)
+    setIsSidebarOpen(false);
+    setRegionNPS(null); // Reset region NPS when sidebar is closed
   };
 
   // Fonction pour gérer le changement de vue
@@ -80,39 +98,34 @@ export default function Home() {
     <Layout>
       <Head>
         <title>Le CX Navigator</title>
-        <meta
-          name="description"
-          content="Create mapping apps with Next.js Leaflet for QoE"
-        />
+        <meta name="description" content="Create mapping apps with Next.js Leaflet for QoE" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Section>
         <Container>
-          <div style={{display:"flex", justifyContent:"space-between"}}>
-              {/* Intégration de la barre de recherche */}
-          <SearchBar setSearchQuery={setSearchQuery} />
-
-          {/* Sélecteur de vue */}
-          <div >
-            <select value={selectedView} onChange={handleChangeView} style={{border: "1px solid #d1d5db", borderRadius: "6px"}}>
-              {views.map((view) => (
-                <option key={view} value={view}>
-                  {view}
-                </option>
-              ))}
-            </select>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <SearchBar setSearchQuery={setSearchQuery} />
+            <div>
+              <select
+                value={selectedView}
+                onChange={handleChangeView}
+                style={{ border: "1px solid #d1d5db", borderRadius: "6px" }}
+              >
+                {views.map((view) => (
+                  <option key={view} value={view}>
+                    {view}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          </div>
-          
 
-
-          {/* Afficher la sidebar */}
           {isSidebarOpen && selectedMarker && (
-              <Sidebar isOpen={true} onClose={handleCloseSidebar}>
-                <h2 className={styles.code}>Site de {selectedMarker.nom}</h2>
-                <div className={styles.special}>Détails du site</div>
-                <ul className={styles.listtext}>
+            <Sidebar isOpen={true} onClose={handleCloseSidebar}>
+              <h2 className={styles.code}>Site de {selectedMarker.nom}</h2>
+              <div className={styles.special}>Détails du site</div>
+              <ul className={styles.listtext}>
                   <li>Localité :  {selectedMarker.localite}</li>
                   <li>Type de zone : {selectedMarker.zonepmo}</li>
                   <li>Région : {selectedMarker.region}</li>
@@ -121,10 +134,14 @@ export default function Home() {
                   <li>QoE data : {selectedMarker.data.toFixed(3)}</li>
                   <li>QoE sms : {selectedMarker.sms.toFixed(3)}</li>
                   <li>QoE voix : {selectedMarker.voix.toFixed(3)}</li>
-                  <li>Taux de dropcall : {selectedMarker.dropcall.toFixed(3)}</li>
-                </ul>
+                  <li>Taux de dropcall : {selectedMarker.drop_call.toFixed(3)}</li>
+              </ul>
+
+              {/* Display region NPS in sidebar */}
+              <div className={styles.special}>NPS de la région: {regionNPS}</div>
               
-                <div className={styles.special}>Explicatif QoE</div>
+
+              <div className={styles.special}>Explicatif QoE</div>
                   <b className={styles.listtext}>Sur la QoE SMS</b>
                   <p className={styles.listtext}>{analyseQoE("sms", selectedMarker.sms, 92.0).verdict}</p>
                   
@@ -138,7 +155,7 @@ export default function Home() {
                   <LineChart></LineChart>
                 </div>
               </Sidebar>
-            )}
+          )}
 
           {/* Afficher la carte en fonction de la vue sélectionnée */}
           <div className={styles.map}>
@@ -162,7 +179,7 @@ export default function Home() {
                   {filteredMarkers.map((marker, index) => (
                     <Marker
                       key={index}
-                      position={[marker.coords[0], marker.coords[1]]}
+                      position={[marker.latitude, marker.longitude]}
                       eventHandlers={{ dblclick: () => {
                        handleMarkerDoubleClick(marker);
                       }}}
@@ -184,7 +201,7 @@ export default function Home() {
                         {marker.zonepmo}
                         <br />
                         <b>Coordonnées : </b>
-                        {marker.coords[1]} -- {marker.coords[0]}
+                        {marker.longitude} -- {marker.latitude}
                       </Popup>
                     </Marker>
                   ))}

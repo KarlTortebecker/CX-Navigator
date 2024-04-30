@@ -1,6 +1,6 @@
 [
   {
-    "region": "CM Adamaoua",
+    "region": "Adamaoua",
     "nps": -22.22,
     "nombre r\u00e9pondants": 63,
     "qualite_couverture_moyenne": 6.873015873,
@@ -9,7 +9,7 @@
     "qualite_service_client_moyenne": 7.5396825397
   },
   {
-    "region": "CM Centre",
+    "region": "Centre",
     "nps": -25.27,
     "nombre r\u00e9pondants": 277,
     "qualite_couverture_moyenne": 6.5848375451,
@@ -18,7 +18,7 @@
     "qualite_service_client_moyenne": 7.0938628159
   },
   {
-    "region": "CM Est",
+    "region": "Est",
     "nps": -30.77,
     "nombre r\u00e9pondants": 52,
     "qualite_couverture_moyenne": 5.9615384615,
@@ -27,7 +27,7 @@
     "qualite_service_client_moyenne": 6.7884615385
   },
   {
-    "region": "CM Extr\u00eame-Nord",
+    "region": "Extr\u00eame-Nord",
     "nps": 3.16,
     "nombre r\u00e9pondants": 158,
     "qualite_couverture_moyenne": 7.6708860759,
@@ -36,7 +36,7 @@
     "qualite_service_client_moyenne": 7.7974683544
   },
   {
-    "region": "CM Littoral",
+    "region": "Littoral",
     "nps": -19.5,
     "nombre r\u00e9pondants": 241,
     "qualite_couverture_moyenne": 6.5062240664,
@@ -45,7 +45,7 @@
     "qualite_service_client_moyenne": 7.1244813278
   },
   {
-    "region": "CM Nord",
+    "region": "Nord",
     "nps": 10.48,
     "nombre r\u00e9pondants": 105,
     "qualite_couverture_moyenne": 7.3714285714,
@@ -54,7 +54,7 @@
     "qualite_service_client_moyenne": 7.4285714286
   },
   {
-    "region": "CM Nord-Ouest",
+    "region": "Nord-Ouest",
     "nps": 19.35,
     "nombre r\u00e9pondants": 31,
     "qualite_couverture_moyenne": 7.064516129,
@@ -63,7 +63,7 @@
     "qualite_service_client_moyenne": 7.064516129
   },
   {
-    "region": "CM Ouest",
+    "region": "Ouest",
     "nps": 0.0,
     "nombre r\u00e9pondants": 95,
     "qualite_couverture_moyenne": 7.1894736842,
@@ -72,7 +72,7 @@
     "qualite_service_client_moyenne": 7.3263157895
   },
   {
-    "region": "CM Sud",
+    "region": "Sud",
     "nps": -26.19,
     "nombre r\u00e9pondants": 42,
     "qualite_couverture_moyenne": 6.5238095238,
@@ -81,7 +81,7 @@
     "qualite_service_client_moyenne": 6.9523809524
   },
   {
-    "region": "CM Sud-Ouest",
+    "region": "Sud-Ouest",
     "nps": 16.13,
     "nombre r\u00e9pondants": 31,
     "qualite_couverture_moyenne": 6.7419354839,
