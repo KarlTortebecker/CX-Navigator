@@ -1,0 +1,97 @@
+Table dbo.QOE_SITE :
+-------------------
+
+		SELECT
+            r.annee,
+            r.mois,
+            r.Site site,
+            100 * CAST(((r.OCINIT + r.TCINIT) - (r.OCKO + r.OCKODC + r.TCKO + r.TCKODC)) AS decimal) / NULLIF(r.OCINIT + r.TCINIT, 0) voix,
+            100 * CAST((r.SMSMOOK + r.SMSMTOK) AS decimal) / NULLIF(r.SMSMOOK + r.SMSMTOK + r.SMSMOKO + r.SMSMTKO, 0) sms,
+            100 * CAST((r.TCPSESSIONOKDOWN + r.TCPSESSIONOKSTREAM + r.LATTCPSESSIONOKVOIP + r.LATTCPSESSIONOKWEB) AS decimal) / NULLIF(r.TCPSESSIONOKDOWN + r.TCPSESSIONOKSTREAM + r.LATTCPSESSIONOKVOIP + r.LATTCPSESSIONOKWEB + r.TCPSESSIONKODOWN + r.TCPSESSIONKOSTREAM + r.LATTCPSESSIONKOVOIP + r.LATTCPSESSIONKOWEB, 0) data,
+            100 * CAST(r.LATTCPSESSIONOKWEB AS decimal) / NULLIF(r.LATTCPSESSIONOKWEB + r.LATTCPSESSIONKOWEB, 0) web,
+            100 * CAST((r.TCPSESSIONOKDOWN) AS decimal) / NULLIF(r.TCPSESSIONOKDOWN + r.TCPSESSIONKODOWN, 0) download,
+            100 * (CAST((r.TCPSESSIONOKSTREAM) AS decimal) / NULLIF(r.TCPSESSIONOKSTREAM + r.TCPSESSIONKOSTREAM, 0)) streaming,
+            100 * CAST(r.LATTCPSESSIONOKVOIP AS decimal) / NULLIF(r.LATTCPSESSIONOKVOIP + r.LATTCPSESSIONKOVOIP, 0)voip,
+            100 * (CAST((r.OCKODC + r.TCKODC) AS decimal)) / NULLIF(r.OCINIT + r.TCINIT, 0) drop_call,
+            moy_clients_voix,
+            moy_clients_sms,
+            moy_clients_data
+        FROM (
+            SELECT
+                DATEPART(year, Date_Mesure) annee,
+                mois = CASE DATEPART(month, Date_Mesure)
+                    WHEN 1 THEN 'janvier'
+                    WHEN 2 THEN 'février'
+                    WHEN 3 THEN 'mars'
+                    WHEN 4 THEN 'avril'
+                    WHEN 5 THEN 'mai'
+                    WHEN 6 THEN 'juin'
+                    WHEN 7 THEN 'juillet'
+                    WHEN 8 THEN 'août'
+                    WHEN 9 THEN 'septembre'
+                    WHEN 10 THEN 'octobre'
+                    WHEN 11 THEN 'novembre'
+                    ELSE 'décembre'
+                END,
+                UPPER(Site) site,
+                SUM(cast(TCPSESSIONOKWEB as bigint)) TCPSESSIONOKWEB,
+                SUM(cast(TCPSESSIONOKVOIP as bigint)) TCPSESSIONOKVOIP,
+                SUM(cast(TCPSESSIONOKDOWN as bigint)) TCPSESSIONOKDOWN,
+                SUM(cast(TCPSESSIONOKSTREAM as bigint)) TCPSESSIONOKSTREAM,
+                SUM(cast(TCPSESSIONKODOWN as bigint)) TCPSESSIONKODOWN,
+                SUM(cast(TCPSESSIONKOSTREAM as bigint)) TCPSESSIONKOSTREAM,
+                SUM(cast(TCPSESSIONKOWEB as bigint)) TCPSESSIONKOWEB,
+                SUM(cast(TCPSESSIONKOVOIP as bigint)) TCPSESSIONKOVOIP,
+                SUM(cast(LATTCPSESSIONOKDOWN as bigint)) LATTCPSESSIONOKDOWN,
+                SUM(cast(LATTCPSESSIONOKSTREAM as bigint)) LATTCPSESSIONOKSTREAM,
+                SUM(cast(LATTCPSESSIONOKVOIP as bigint)) LATTCPSESSIONOKVOIP,
+                SUM(cast(LATTCPSESSIONOKWEB as bigint)) LATTCPSESSIONOKWEB,
+                SUM(cast(LATTCPSESSIONKODOWN as bigint)) LATTCPSESSIONKODOWN,
+                SUM(cast(LATTCPSESSIONKOSTREAM as bigint)) LATTCPSESSIONKOSTREAM,
+                SUM(cast(LATTCPSESSIONKOVOIP as bigint)) LATTCPSESSIONKOVOIP,
+                SUM(cast(LATTCPSESSIONKOWEB as bigint)) LATTCPSESSIONKOWEB,
+                SUM(cast(SMSMTOKALL as bigint)) SMSMTOKALL,
+                SUM(cast(SMSMTKOALL as bigint)) SMSMTKOALL,
+                SUM(cast(SMSMOKOALL as bigint)) SMSMOKOALL,
+                SUM(cast(SMSMOOKALL as bigint)) SMSMOOKALL,
+                SUM(cast(SMSMOOK as bigint)) SMSMOOK,
+                SUM(cast(SMSMOKO as bigint)) SMSMOKO,
+                SUM(cast(SMSMTKO as bigint)) SMSMTKO,
+                SUM(cast(SMSMTOK as bigint)) SMSMTOK,
+                SUM(cast(OCINIT as bigint)) OCINIT,
+                SUM(cast(TCINIT as bigint)) TCINIT,
+                SUM(cast(TCKO as bigint)) TCKO,
+                SUM(cast(OCKO as bigint)) OCKO,
+                SUM(cast(OCKODC as bigint)) OCKODC,
+                SUM(cast(TCKODC as bigint)) TCKODC,
+                AVG(cast(NB_CLIENTS_VOIX as bigint)) moy_clients_voix,
+                AVG(cast(NB_CLIENTS_SMS as bigint)) moy_clients_sms,
+                AVG(cast(NB_CLIENTS_DATA as bigint)) moy_clients_data
+            FROM dbo.QOE_SITE
+            WHERE 
+                (convert(date, Date_Mesure, 103) >= convert(date, '{start_date}', 103))
+                AND
+                (convert(date, Date_Mesure, 103) <= convert(date, '{formatted_end_date}', 103))
+                AND
+                technologie IN {formated_techno}
+            GROUP BY 
+                DATEPART(year, Date_Mesure),
+                CASE DATEPART(month, Date_Mesure)
+                        WHEN 1 THEN 'janvier'
+                        WHEN 2 THEN 'février'
+                        WHEN 3 THEN 'mars'
+                        WHEN 4 THEN 'avril'
+                        WHEN 5 THEN 'mai'
+                        WHEN 6 THEN 'juin'
+                        WHEN 7 THEN 'juillet'
+                        WHEN 8 THEN 'août'
+                        WHEN 9 THEN 'septembre'
+                        WHEN 10 THEN 'octobre'
+                        WHEN 11 THEN 'novembre'
+                        ELSE 'décembre'
+                    END,
+                site
+        ) r
+        ORDER BY annee, mois, site
+
+
