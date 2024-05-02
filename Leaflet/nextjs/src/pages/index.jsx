@@ -11,17 +11,24 @@ import LineChart from "@components/LineChart";
 
 import styles from "@styles/Home.module.scss";
 
-import data from "./markers.json";
-import regions from "./regions.json";
-import departements from './departements.json';
-import arrondissements from "./arrondissements.json";
-import cameroun from "./cameroun.json";
-import npsData from "./NPS_MARS.json"; // Import NPS data
+import data from "./data/markers.json";
+import regions from "./data/regions.json";
+import departements from './data/departements.json';
+import arrondissements from "./data/arrondissements.json";
+import cameroun from "./data/cameroun.json";
+import npsData from "./data/NPS_MARS.json"; // Import NPS data
 
-import { analyseQoE } from "./qoeAnalyser";
+
+import { analyseQoE } from "./utils/qoeAnalyser";
 
 const DEFAULT_CENTER = [7.37, 12.35];
 const views = ["Pays", "Régions", "Départements", "Arrondissements", "Sites"];
+
+// Fonction pour récupérer le NPS d'une région
+const getRegionNPS = (regionName, npsData) => {
+  const regionNPS = npsData.find((item) => item.region.toLowerCase() === regionName.toLowerCase());
+  return regionNPS ? regionNPS : null;
+};
 
 export default function Home() {
   const [markers, setMarkers] = useState([]);
@@ -34,7 +41,8 @@ export default function Home() {
   const [selectedView, setSelectedView] = useState(views[0]);
   const [selectedMarker, setSelectedMarker] = useState();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [regionNPS, setRegionNPS] = useState(); // State to hold region NPS value
+  const [regionNPS, setRegionNPS] = useState(); // State to hold region NPS valuemeasurement
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +52,8 @@ export default function Home() {
         setArrondissementData(arrondissements);
         setCountryData(cameroun);
         setDepartementData(departements);
-        setNps(npsData)
+        setNps(npsData);
+    
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -66,21 +75,9 @@ export default function Home() {
     setSelectedMarker(marker);
   
     // Fetch and set region NPS value when sidebar is opened for a site
-    const region = regions.features.find((feature) => feature.properties.Région.toLowerCase() === marker.region.toLowerCase());
-    if (region) {
-      const regionName = region.properties.Région;
-      const regionNPS = nps.find((item) => item.region === regionName);
-      if (regionNPS) {
-        const regionNPSValue = regionNPS.nps;
-        console.log(regionNPSValue);
-        setRegionNPS(regionNPSValue);
-      } else {
-        setRegionNPS(null); // Reset region NPS if region NPS data not found
-      }
-    } else {
-      setRegionNPS(null); // Reset region NPS if region not found
-    }
-    
+    const regionName = marker.region;
+    const regionNPSValue = getRegionNPS(regionName, npsData);
+    setRegionNPS(regionNPSValue.nps);
   };
 
   const handleCloseSidebar = () => {
@@ -93,6 +90,19 @@ export default function Home() {
   const handleChangeView = (event) => {
     setSelectedView(event.target.value);
   };
+
+  // Fonction pour générer le contenu en fonction de la disponibilité des données
+  const generateContent = (info, label) => {
+    const isInteger = Number.isInteger(info);
+  
+    if (isInteger) {
+      return `${label}: ${info}`;
+    } else {
+      // Sinon, le formater avec 2 chiffres après la virgule
+      return info ? `${label}: ${info.toFixed(2)}` : `${label}: Non disponible`;
+    }
+  };
+  
 
   return (
     <Layout>
@@ -230,7 +240,16 @@ export default function Home() {
                       onEachFeature={(feature, layer) => {
                         layer.on('click', (e) => {
                           const regionInfo = feature.properties; // Récupérer les informations de la région
-                          layer.bindPopup(`<b> Région : ${regionInfo.Région}</b><br> Superficie : ${regionInfo.Superficie}`); // Afficher les informations dans le popup
+                          const regionNPSInfo = getRegionNPS(regionInfo.Région, npsData); // Récupérer les informations sur le NPS de la région
+                          const npsContent = generateContent(regionNPSInfo.nps, 'NPS ')// Générer le contenu HTML pour le NPS
+                          layer.bindPopup(`<b> Région : ${regionInfo.Région}</b><br> Superficie : ${regionInfo.Superficie}
+                                        <br>${generateContent(regionNPSInfo.nps, 'NPS ')}
+                                        <br>${generateContent(regionNPSInfo.qualite_couverture_moyenne, 'Qualité de la couverture ')}
+                                        <br>${generateContent(regionNPSInfo.qualite_appels_moyenne, 'Qualité des appels ')}
+                                        <br>${generateContent(regionNPSInfo.qualite_data_principal_moyenne, 'Qualité des data ')}
+                                        <br>${generateContent(regionNPSInfo.qualite_service_client_moyenne, 'Qualité du service client ')}
+                                        <br>${generateContent(regionNPSInfo['nombre répondants'], 'Nombre de répondants ')}
+                                        <br>Mesure réalisée au mois de <b>Mars</b>`); // Afficher les informations dans le popup
                         });
                       }}
                     />
@@ -238,6 +257,7 @@ export default function Home() {
                 )}
             </Map>
             )}
+
 
             {selectedView === "Pays" && (
               <Map
