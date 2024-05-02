@@ -120,7 +120,7 @@ export default function Home() {
               <select
                 value={selectedView}
                 onChange={handleChangeView}
-                style={{ border: "1px solid #d1d5db", borderRadius: "6px" }}
+                style={{ border: "3px solid #d1d5db", borderRadius: "6px" }}
               >
                 {views.map((view) => (
                   <option key={view} value={view}>
@@ -161,9 +161,18 @@ export default function Home() {
                   <b className={styles.listtext}>Sur la QoE Data</b>
                   <p className={styles.listtext}>{analyseQoE("data", selectedMarker.data, 92.0).verdict}</p>
                   
+
                 <div className={styles.LineChart} >
                   <LineChart></LineChart>
                 </div>
+
+                <div className={styles.special}>Information clientèle</div>
+                <ul className={styles.listtext}>
+                <li>Nombre moyen de clients sur les sms :  <b>{selectedMarker.moy_clients_sms}</b></li>
+                <li>Nombre moyen de clients sur la voix :  <b>{selectedMarker.moy_clients_voix}</b></li>
+                <li>Nombre moyen de clients sur la data :  <b>{selectedMarker.moy_clients_data}</b></li>
+                
+              </ul>
               </Sidebar>
           )}
 
@@ -202,13 +211,13 @@ export default function Home() {
                         {marker.code}
                         <br />
                         <b>Type de zone : </b>
-                        {marker.Typezone}
+                        {marker.type_zone}
                         <br />
                         <b>QoE data : </b>
                         {marker.data}
                         <br />
                         <b>Zone PMO : </b>
-                        {marker.zonepmo}
+                        {marker.zone_pmo}
                         <br />
                         <b>Coordonnées : </b>
                         {marker.longitude} -- {marker.latitude}
