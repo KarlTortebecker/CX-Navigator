@@ -1,0 +1,6 @@
+Les éléments qui pourront être intéréssants à ajouter au projet sans être essentiels
+-------------------------------------------------------------------------------------
+
+ * Animation explicative de la QoE
+ * zoomer et centrer sur le site après la recherche
+ * 

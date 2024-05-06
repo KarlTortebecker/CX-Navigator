@@ -171,7 +171,7 @@ export default function Home() {
                 <li>Nombre moyen de clients sur les sms :  <b>{selectedMarker.moy_clients_sms}</b></li>
                 <li>Nombre moyen de clients sur la voix :  <b>{selectedMarker.moy_clients_voix}</b></li>
                 <li>Nombre moyen de clients sur la data :  <b>{selectedMarker.moy_clients_data}</b></li>
-                
+                <br/>
               </ul>
               </Sidebar>
           )}
