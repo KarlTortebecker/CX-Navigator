@@ -8,7 +8,7 @@ import Container from "@components/Container";
 import Sidebar from "@components/Sidebar";
 import Map from "@components/Map";
 import SearchBar from "@components/SearchBar";
-import LineChart from "@components/LineChart";
+import DateRangeComp from "@components/DateRangeComp";
 
 import styles from "@styles/Home.module.scss";
 
@@ -17,9 +17,8 @@ import regions from "./data/regions.json";
 import departements from "./data/departements.json";
 import arrondissements from "./data/arrondissements.json";
 import cameroun from "./data/cameroun.json";
-import npsData from "./data/NPS_MARS.json";
+import npsData from "./data/NPS_MARS.json"; 
 
-import { analyseQoE } from "./utils/qoeAnalyser";
 import QoEComponent from "@components/Layers/QoEComponent";
 import NPSComponent from "@components/Layers/NPSComponent";
 import ClienteleComponent from "@components/Layers/ClienteleComponent";
@@ -69,6 +68,7 @@ const initialDataState = {
 
 export default function Home() {
   const [dataState, setDataState] = useState(initialDataState);
+  const [selectedDateRange, setSelectedDateRange] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedView, setSelectedView] = useState(views[0]);
   const [selectedMarker, setSelectedMarker] = useState();
@@ -76,7 +76,7 @@ export default function Home() {
   const [regionNPS, setRegionNPS] = useState();
   const [regionInfo, setRegionInfo] = useState(null);
   const [regionNPSInfo, setRegionNPSInfo] = useState(null);
-  const [selectedLayers, setSelectedLayers] = useState([]);// Définissez la couche par défaut
+  const [selectedLayers, setSelectedLayers] = useState([]);
 
 
   // To fetch data from the sources
@@ -112,6 +112,11 @@ export default function Home() {
       marker.localite.toLowerCase().includes(searchQuery.toLowerCase()) ||
       marker.region.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Fonction pour mettre à jour la plage de dates sélectionnée
+  const handleDateRangeChange = (dateRange) => {
+    setSelectedDateRange(dateRange);
+  };
 
   const calculateRegionStats = (sites) => {
     const regionStats = {};
@@ -224,7 +229,7 @@ const renderSidebar = () => {
             <li>QoE voix : <b>{selectedMarker.voix.toFixed(2)}</b></li>
             <li>Taux de dropcall : <b>{selectedMarker.drop_call.toFixed(5)}</b></li>
         </ul>
-
+        <DateRangeComp onChange={handleDateRangeChange}/>
         <QoEComponent selectedMarker={selectedMarker} data={customData}></QoEComponent>
         
         {selectedLayers.includes("NPS") && (
@@ -241,6 +246,7 @@ const renderSidebar = () => {
     return (
       <Sidebar isOpen={true} onClose={() => setIsSidebarOpen(false)}>
         <h2 className={styles.code}>Region : {regionInfo.Région}</h2>
+        <DateRangeComp />
           <QoEComponent regionStatsData={regionStatsData}></QoEComponent>
         {selectedLayers.includes("NPS") && (
           <NPSComponent regionNPSInfo={regionNPSInfo}></NPSComponent>
