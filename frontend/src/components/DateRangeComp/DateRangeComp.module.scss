@@ -1,9 +1,9 @@
 @import "@styles/settings/_settings";
 
-input.inputBox {
-    font-size: 22px;
+.inputBox {
+    font-size: 14px;
     padding: 5px 8px 4px 8px;
-    border-radius: 3px;
+    border-radius: 6px;
     border: 1px solid #666;
   }
   
@@ -19,4 +19,12 @@ input.inputBox {
     top: 40px;
     border: 1px solid #cccccc;
     z-index: 999;
+  }
+
+  .listtext{
+    list-style-type: none;
+    padding: 1px 10px;
+    font-size: 0.8rem;
+    font-family: Helvetica, sans-serif;
+    text-align:justify;
   }

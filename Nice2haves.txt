@@ -3,4 +3,5 @@ Les éléments qui pourront être intéréssants à ajouter au projet sans être
 
  * Animation explicative de la QoE
  * zoomer et centrer sur le site après la recherche
- * 
+ * Possibilité d'exporter les métriques sous forme de fichier csv sur une durée
+ * Pouvoir sélectionner différents type de carte pour mettre en avant le relief
